@@ -26,9 +26,26 @@ public class Weapon : MonoBehaviour
 
     public string ShootAnimation;
 
+    public KeyboardActions keyBoard;
+
+    void Awake()
+    {
+        keyBoard = new KeyboardActions();
+    }   
+
     void Start()
     {
         currentAmmo = startAmmo;
+    }
+
+    void OnEnable()
+    {
+        keyBoard.Enable();
+    }
+
+    void OnDisable()
+    {
+        keyBoard.Disable();
     }
 
     
@@ -37,12 +54,12 @@ public class Weapon : MonoBehaviour
         if(isRealoading == true)
             return;
 
-        if(currentAmmo < startAmmo && Keyboard.current.rKey.wasPressedThisFrame)
+        if(currentAmmo < startAmmo && keyBoard.Controls.Reload.ReadValue<float>() == 1)
             StartCoroutine(Reaload());
 
         if(Time.time > nextTimeToFire)
         {
-            if (Mouse.current.leftButton.isPressed)
+            if (keyBoard.Controls.Shoot.ReadValue<float>() == 1)
             {
                 nextTimeToFire = Time.time + fireDelay;
                 Shoot();
@@ -58,7 +75,9 @@ public class Weapon : MonoBehaviour
         {
             ScreenShake shake = mainCamera.GetComponent<ScreenShake>();
             if(shake != null)
-                StartCoroutine(shake.Shake(ShakeDuration, ShakeMagnitude));
+                StartCoroutine(shake.Shake(ShakeDuration, Random.Range(-ShakeMagnitude, ShakeMagnitude)));
+
+            
         }
 
         Animator animator = GetComponent<Animator>();

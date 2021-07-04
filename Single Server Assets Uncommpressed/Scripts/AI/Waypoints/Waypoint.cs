@@ -24,7 +24,10 @@ public class Waypoint : MonoBehaviour
         if(fAI)
         {  
             NavMeshAgent agent = fAI.GetComponent<NavMeshAgent>();
-            agent.SetDestination(GetNextWaypoint().transform.position);
+            if(fAI.currentState == FriendlyAI.CurrentState.Patrolling)
+            {
+                agent.SetDestination(GetNextWaypoint().transform.position);
+            }
         }
     }
 

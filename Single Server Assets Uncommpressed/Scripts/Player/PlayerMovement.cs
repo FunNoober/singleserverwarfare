@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     private bool isGrounded;
     private bool canRun = true;
-    private float xRotation;
+    public float xRotation;
     private float startPlayerHeight;
 
     private float xVector;
@@ -97,17 +97,17 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * xVector + transform.forward * zVector;
         playerController.Move(move * moveSpeed * Time.deltaTime);
 
-        if (Keyboard.current.leftShiftKey.isPressed && canRun == true && hasRun == true)
+        if (keyboardControls.Controls.Sprint.ReadValue<float>() == 1 && canRun == true && hasRun == true)
         {
             playerController.Move(move * runSpeed * Time.deltaTime);
             if (shouldUseStaminia == true)
                 currentStamina -= Time.deltaTime;
         }
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame && shouldUseJump)
+        if (keyboardControls.Controls.Jump.ReadValue<float>() == 1 && shouldUseJump)
             Jump();
 
-        if (Keyboard.current.ctrlKey.isPressed && canCrouch)
+        if (keyboardControls.Controls.Crouch.ReadValue<float>() == 1 && canCrouch)
         {
             playerController.height = crouchHeight;
         }

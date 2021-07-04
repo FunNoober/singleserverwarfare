@@ -10,6 +10,15 @@ public class FriendlyAI : MonoBehaviour
     private Transform waypointToMoveTo;
     public Waypoint[] waypointOnStart;
 
+    public enum CurrentState
+    {
+        Patrolling,
+        Chasing,
+        Shooting
+    };
+
+    public CurrentState currentState;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
